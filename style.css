@@ -1,53 +1,86 @@
+* {
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, Helvetica, sans-serif;
+}
 
-# Basic CRUD Application (PHP & MySQL)
-# CRUD Application with Advanced Features (Task-3)
+body {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+  line-height: 1.6;
+}
 
-A simple blog-style CRUD app with user authentication (registration/login) built with PHP (mysqli) and MySQL.
-Enhanced CRUD app with:
-- Search functionality for posts
-- Pagination (5 posts per page)
-- UI improvements using Bootstrap 5
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
 
-## Features
-- Register and Login (password hashing with `password_hash`).
-- Create, Read, Update, Delete posts.
-- Session-based authentication guard.
+nav a {
+  margin-right: 12px;
+  text-decoration: none;
+}
 
-## Requirements
-- PHP 8+
-- MySQL / MariaDB
-- Apache (XAMPP/WAMP/MAMP or similar)
-- Git (optional)
-- User authentication (register/login)
-- Create, Read, Update, Delete posts
-- Search and pagination on posts
-- Responsive UI with Bootstrap
+.card {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 12px 0;
+}
 
-## Setup
-1. Create database and tables:
-   - Import `database.sql` into your MySQL server.
+input[type=text],
+input[type=password],
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+}
 
-2. Configure DB connection:
-   - Edit `config.php` if your MySQL credentials differ.
+button,
+.btn {
+  display: inline-block;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
 
-3. Run locally:
-   - Place the folder in your web root (e.g., `C:/xampp/htdocs/blog`).
-   - Start Apache and MySQL.
-   - Visit `http://localhost/blog/register.php` to create a user, then login.
+.btn-primary {
+  background: #2563eb;
+  color: #fff;
+}
 
-## Pages
-- `register.php` — create a user
-- `login.php` — login
-- `index.php` — list posts (protected)
-- `create.php` — create post (protected)
-- `edit.php` — update post (protected)
-- `delete.php` — delete post (protected, POST only)
-- `logout.php` — end session
+.btn-danger {
+  background: #dc2626;
+  color: #fff;
+}
 
-## Notes
-- All queries use prepared statements.
-- Passwords are hashed; never store plaintext passwords.
-1. Import `database.sql` into MySQL (same schema as Task-2).
-2. Adjust `config.php` if needed.
-3. Place folder in web root (e.g. `htdocs`).
-4. Run `http://localhost/crud_app_task3/`.
+form {
+  display: grid;
+  gap: 12px;
+}
+
+h1,
+h2,
+h3 {
+  margin: 8px 0;
+}
+
+hr {
+  border: none;
+  height: 1px;
+  background: #e5e7eb;
+}
+
+.small {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.alert {
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #fef3c7;
+}

@@ -1,65 +1,73 @@
 <?php
+session_start();
 require 'config.php';
-
-$error="";
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-$username = trim($_POST['username'] ??'');
-$password = $_POST['password'] ?? '';
-$stmt = $conn->prepare("SELECT id, username, password FROM users WHERE username?");
-
-$stmt->bind_param("s", $username);
-
-$stmt->execute();
-
-$result = $stmt->get_result();
-
-$user = $result->fetch_assoc();
-
-if ($user && password_verify ($password, $user['password'])) {
-
-$_SESSION ['username']= $user['username'];
-
-$_SESSION ['user_id'] Suser['id'];
-
-header("Location: index.php");
-
-exit;
-} else{
-$error "Invalid username or password.";
+// If already logged in, redirect
+if (isset($_SESSION['user'])) {
+  header("Location: index.php");
+  exit;
 }
+$err = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $id   = trim($_POST['user_or_mobile'] ?? '');
+  $pass = $_POST['password'] ?? '';
+  try {
+    // Case-insensitive username OR mobile
+    $stmt = $conn->prepare("SELECT * FROM users WHERE (LOWER(username)=LOWER(?) OR mobile=?) LIMIT 1");
+    $stmt->bind_param("ss", $id, $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user   = $result->fetch_assoc();
+    if ($user) {
+      // Debug: check password length
+      if (strlen($user['password']) < 60) {
+        $err = "⚠️ Password hash truncated in DB (length=" . strlen($user['password']) . "). 
+                        Fix with: ALTER TABLE users MODIFY password VARCHAR(255);";
+      } elseif (password_verify($pass, $user['password'])) {
+        $_SESSION['user'] = [
+          'id'       => $user['id'],
+          'username' => $user['username'],
+          'name'     => $user['name'],
+          'mobile'   => $user['mobile'],
+          'role'     => $user['role'],
+          'profile_pic' => $user['profile_pic'],
+        ];
+        header("Location: index.php");
+        exit;
+      } else {
+        $err = "❌ Invalid credentials (hash mismatch).";
+      }
+    } else {
+      $err = "❌ No user found with that username/mobile.";
+    }
+  } catch (Throwable $e) {
+    $err = "Login error: " . $e->getMessage();
+  }
 }
-$registered isset($_GET['registered']);
+include 'header.php';
 ?>
-<!DOCTYPE html>
-
-<html>
-<meta charset="utf-8">
-
-<title>Login</title>
-
-</head>
-
-<body>
-
-<header>
-
-<h1> LOgin </h1>
-
-<nav><a href="register.php">Register</a></nav>
-
-</header>
-
-<?php if ($registered): ?><div class="alert"> Registration successful.Please login.</div><?php endif; ?>
-<form method="POST">
-
-<label> Username</label>
-<input type="text" name="username" required>
-<label> Password</label>
-
-<input type="password" name="password" required>
-<button class="btn-primary" type="submit">LOgin</button>
-</form>
-</body>
-</htmL>
+<div class="row justify-content-center">
+  <div class="col-lg-5">
+    <div class="card p-4 shadow-lg border-0 rounded-4">
+      <h3 class="mb-3 text-center">🔐 Login</h3>
+      <?php if ($err): ?>
+        <div class="alert alert-danger"><?= htmlspecialchars($err) ?></div>
+      <?php endif; ?>
+      <form method="post" novalidate>
+        <div class="mb-3">
+          <label class="form-label">Username or Mobile</label>
+          <input class="form-control" name="user_or_mobile" required
+            value="<?= htmlspecialchars($_POST['user_or_mobile'] ?? '') ?>">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-control" name="password" required>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="btn btn-primary btn-rounded w-100">Login</button>
+          <a class="btn btn-outline-secondary btn-rounded w-100" href="register.php">Register</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<?php include 'footer.php'; ?>

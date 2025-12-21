@@ -1,39 +1,34 @@
-# RentLet Blog System
+# CRUD Application with Advanced Features (Task-3)
 
-A PHP & MySQL based blog with user roles (Admin, Editor, User), authentication, CRUD operations, profile management, and responsive Bootstrap 5 UI.
+Enhanced CRUD app with:
+- Search functionality for posts
+- Pagination (5 posts per page)
+- UI improvements using Bootstrap 5
 
 ## Features
-- 🔑 Authentication (login with username or mobile + password)
-- 👤 Roles: Admin, Editor, User
-  - Admin: Manage all posts & users
-  - Editor: Add/edit/delete own posts (created by Admin)
-  - User: View posts only, manage own account
-- 📂 Account management (update username, name, mobile, password, profile pic)
-- 📝 CRUD operations for posts
-- 🔍 Search & pagination
-- 🔒 Secure with prepared statements, password hashing
-- 🎨 Responsive UI + Bootstrap modals
+- User authentication (register/login)
+- Create, Read, Update, Delete posts
+- Search and pagination on posts
+- Responsive UI with Bootstrap
+# Blog App — Task-4 (Security + Responsive UI)
 
-## Deployment (XAMPP)
+Features:
+- Secure auth (password_hash, prepared statements)
+- User roles (admin/editor/user) + role-based access
+- CRUD on posts (owner can edit/delete; admin can manage all; editor can edit/delete only his/her posts)
+- Search + Pagination (8 per page)
+- Responsive UI with Bootstrap 5 + custom CSS
+- Admin page to manage users
 
-1. **Install XAMPP** and start Apache & MySQL.
-2. **Extract Project**
-   - Copy project folder into `C:/xampp/htdocs/blog`.
-3. **Create Database**
-   - Open `http://localhost/phpmyadmin/`
-   - Create DB `blog`
-   - Import `database.sql` (included)
-4. **Configure DB**
-   - Edit `config.php` if your MySQL credentials differ.
-5. **Login**
-   - Visit `http://localhost/blog/login.php`
-   - ## Demo Accounts
-    - Admin → **admin / Admin@1**
-    - Editor → **editor1 / Editor@1**
-    - Editor → **editor2 / Editor@2**
-    - User → **user1 / User@1**
-    - User → **user2 / User@2**
-    - User  → **user3 / User@3**
-6. **Roles**
-   - Admin creates Editors.
-   - Users register themselves.
+## Demo Accounts
+- Admin → **admin / Admin@1**
+- Admin → **editor1 / Editor@1**
+- Admin → **editor2 / Editor@2**
+- Admin → **user1 / User@1**
+- Admin → **user2 / User@2**
+- User  → **user3 / User@3**
+
+## Setup
+1) Create DB & import `database.sql` via phpMyAdmin.
+2) Put this folder in your web root: `htdocs/blog`.
+3) Visit: `http://localhost/blog/`
